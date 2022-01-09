@@ -17,7 +17,6 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Text).IsRequired();
             builder.Property(c => c.Text).HasMaxLength(1000);
-            builder.HasOne<Article>(c => c.Article).WithMany(a => a.Comments).HasForeignKey(c => c.ArticleId);
             builder.Property(c => c.CreatedByName).IsRequired();
             builder.Property(c => c.CreatedByName).HasMaxLength(50);
             builder.Property(c => c.ModifiedByName).IsRequired();
@@ -27,6 +26,7 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
             builder.Property(c => c.IsActive).IsRequired();
             builder.Property(c => c.IsDeleted).IsRequired();
             builder.Property(c => c.Note).HasMaxLength(500);
+            builder.HasOne<Article>(c => c.Article).WithMany(a => a.Comments).HasForeignKey(c => c.ArticleId);
             builder.ToTable("Comments");
         }
     }
