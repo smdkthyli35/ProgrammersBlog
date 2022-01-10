@@ -45,7 +45,7 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
                 },
                 new Category
                 {
-                    Id = 1,
+                    Id = 2,
                     Name = "C++",
                     Description = "C++ Programlama Dili ile İlgili En Güncel Bilgiler",
                     IsActive = true,
