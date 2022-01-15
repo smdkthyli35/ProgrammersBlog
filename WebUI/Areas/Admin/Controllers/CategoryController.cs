@@ -1,10 +1,13 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Extensions;
 using Core.Utilities.Results.ComplexTypes;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -24,9 +27,20 @@ namespace WebUI.Areas.Admin.Controllers
             return View(result.Data);
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_CategoryAddPartial");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
+        {
+            var categoryAjaxModel = new CategoryAddAjaxViewModel
+            {
+                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial",categoryAddDto),
+            };
+            return View();
         }
     }
 }
