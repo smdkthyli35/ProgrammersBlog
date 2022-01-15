@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WebUI.Areas.Admin.Models;
 
@@ -36,11 +37,24 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
         {
-            var categoryAjaxModel = new CategoryAddAjaxViewModel
+            if (ModelState.IsValid)
             {
-                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial",categoryAddDto),
-            };
-            return View();
+                var result = await _categoryService.Add(categoryAddDto, "Samed Kütahyalı");
+                if (result.ResultStatus == ResultStatus.Success)
+                {
+                    var categoryAddAjaxModel = JsonSerializer.Serialize(new CategoryAddAjaxViewModel
+                    {
+                        CategoryDto = result.Data,
+                        CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto)
+                    });
+                    return Json(categoryAddAjaxModel);
+                }
+            }
+            var categoryAddAjaxErrorModel = JsonSerializer.Serialize(new CategoryAddAjaxViewModel
+            {
+                CategoryAddPartial = await this.RenderViewToStringAsync("_CategoryAddPartial", categoryAddDto)
+            });
+            return Json(categoryAddAjaxErrorModel);
         }
     }
 }
