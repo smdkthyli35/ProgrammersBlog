@@ -412,7 +412,7 @@
                 placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                 const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                 if (isValid) {
-                    placeHolderDiv.find('.model').modal('hide');
+                    placeHolderDiv.find('.modal').modal('hide');
                     const newTableRow = `
                             <tr name="${categoryUpdateAjaxModel.CategoryDto.Category.Id}">
                                 <td>${categoryUpdateAjaxModel.CategoryDto.Category.Id}</td>
