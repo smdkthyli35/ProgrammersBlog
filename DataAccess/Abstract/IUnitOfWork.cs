@@ -11,8 +11,6 @@ namespace DataAccess.Abstract
         IArticleDal Articles { get; }
         ICategoryDal Categories { get; }
         ICommentDal Comments { get; }
-        IRoleDal Roles { get; }
-        IUserDal Users { get; }
         Task<int> SaveAsync();
     }
 }

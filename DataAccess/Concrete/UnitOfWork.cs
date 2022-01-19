@@ -15,8 +15,6 @@ namespace DataAccess.Concrete
         private EfArticleDal _articleDal;
         private EfCategoryDal _categoryDal;
         private EfCommentDal _commentDal;
-        private EfRoleDal _roleDal;
-        private EfUserDal _userDal;
 
         public UnitOfWork(ProgrammersBlogContext context)
         {
@@ -26,8 +24,6 @@ namespace DataAccess.Concrete
         public IArticleDal Articles => _articleDal ?? new EfArticleDal(_context);
         public ICategoryDal Categories => _categoryDal ?? new EfCategoryDal(_context);
         public ICommentDal Comments => _commentDal ?? new EfCommentDal(_context);
-        public IRoleDal Roles => _roleDal ?? new EfRoleDal(_context);
-        public IUserDal Users => _userDal ?? new EfUserDal(_context);
 
         public async ValueTask DisposeAsync()
         {
