@@ -274,9 +274,9 @@
         }
     });
     //Datatables ends here.
-    //Ajax GET / Getting the _CategoryAddPartial as Modal Form starts from here.
+    //Ajax GET / Getting the _UserAddPartial as Modal Form starts from here.
     $(function () {
-        const url = '/Admin/Category/Add/';
+        const url = '/Admin/User/Add/';
         const placeHolderDiv = $('#modalPlaceHolder');
         $('#btnAdd').click(function () {
             $.get(url).done(function (data) {
@@ -284,7 +284,7 @@
                 placeHolderDiv.find(".modal").modal('show');
             });
         });
-        //Ajax GET / Getting the _CategoryAddPartial as Modal Form ends from here.
+        //Ajax GET / Getting the _UserAddPartial as Modal Form ends from here.
         //Ajax POST / Posting the FormData as CategoryAddDto starts from here.
         placeHolderDiv.on('click', '#btnSave', function (event) {
             event.preventDefault();
