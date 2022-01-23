@@ -62,7 +62,7 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
                 Picture = "defaultUser.png",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                SecurityStamp = new Guid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString()
             };
             adminUser.PasswordHash = CreatePasswordHash(adminUser, "adminuser");
 
@@ -77,7 +77,7 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
                 Picture = "defaultUser.png",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                SecurityStamp = new Guid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString()
             };
             editorUser.PasswordHash = CreatePasswordHash(editorUser, "editoruser");
 
