@@ -350,6 +350,14 @@ namespace WebUI.Areas.Admin.Controllers
                         TempData.Add("SuccessMessage", $"Şifreniz başarıyla değiştirilmiştir.");
                         return View();
                     }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                        return View(userPasswordChangeDto);
+                    }
                 }
                 else
                 {
@@ -360,9 +368,7 @@ namespace WebUI.Areas.Admin.Controllers
             else
             {
                 return View();
-
             }
-            return View();
         }
 
         [Authorize(Roles = "Admin,Editor")]
