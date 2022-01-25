@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebUI.AutoMapper.Profiles;
+using WebUI.Helpers.Abstract;
+using WebUI.Helpers.Concrete;
 
 namespace WebUI
 {
@@ -28,6 +30,7 @@ namespace WebUI
             services.AddSession();
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile),typeof(UserProfile));
             services.LoadMyServices();
+            services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = new PathString("/Admin/User/Login");
