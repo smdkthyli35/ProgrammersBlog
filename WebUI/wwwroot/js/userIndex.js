@@ -328,6 +328,7 @@
                 },
                 error: function (err) {
                     console.log(err);
+                    toastr.error(`${err.responseText}`, 'Hata!');
                 }
             });
         });
@@ -393,8 +394,8 @@
             $.get(url, { userId: id }).done(function (data) {
                 placeHolderDiv.html(data);
                 placeHolderDiv.find('.modal').modal('show');
-            }).fail(function () {
-                toastr.error("Bir hata oluştu!");
+            }).fail(function (err) {
+                toastr.error(`${err.responseText}`, 'Hata!');
             });
         });
 
@@ -449,6 +450,7 @@
                 },
                 error: function (error) {
                     console.log(error);
+                    toastr.error(`${err.responseText}`, 'Hata!');
                 }
             });
         });
