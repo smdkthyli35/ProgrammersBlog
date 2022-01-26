@@ -9,7 +9,7 @@ namespace Business.Abstract
 {
     public interface ICommentService
     {
-        Task<IDataResult<int>> Count();
-        Task<IDataResult<int>> CountByNonDeleted();
+        Task<IDataResult<int>> CountAsync();
+        Task<IDataResult<int>> CountByNonDeletedAsync();
     }
 }
