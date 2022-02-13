@@ -3,7 +3,9 @@ using Business.Abstract;
 using Core.Utilities.Results.ComplexTypes;
 using Core.Utilities.Results.Concrete;
 using Entities.ComplexTypes;
+using Entities.Concrete;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,19 +17,17 @@ using WebUI.Helpers.Abstract;
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ArticleController : Controller
+    public class ArticleController : BaseController
     {
         private readonly IArticleService _articleService;
         private readonly ICategoryService _categoryService;
-        private readonly IMapper _mapper;
-        private readonly IImageHelper _imageHelper;
 
-        public ArticleController(IArticleService articleService, ICategoryService categoryService, IMapper mapper, IImageHelper imageHelper)
+
+        public ArticleController(IArticleService articleService, ICategoryService categoryService, UserManager<User> userManager, IMapper mapper, IImageHelper imageHelper) : base(userManager, mapper, imageHelper)
         {
             _articleService = articleService;
             _categoryService = categoryService;
-            _mapper = mapper;
-            _imageHelper = imageHelper;
+
         }
 
         [HttpGet]
@@ -60,10 +60,10 @@ namespace WebUI.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var articleAddDto = _mapper.Map<ArticleAddDto>(articleAddViewModel);
-                var imageResult = await _imageHelper.Upload(articleAddViewModel.Title, articleAddViewModel.ThumbnailFile, PictureType.Post);
+                var articleAddDto = Mapper.Map<ArticleAddDto>(articleAddViewModel);
+                var imageResult = await ImageHelper.Upload(articleAddViewModel.Title, articleAddViewModel.ThumbnailFile, PictureType.Post);
                 articleAddDto.Thumbnail = imageResult.Data.FullName;
-                var result = await _articleService.AddAsync(articleAddDto, "Samed Kütahyalı");
+                var result = await _articleService.AddAsync(articleAddDto, LoggedInUser.UserName);
                 if (result.ResultStatus == ResultStatus.Success)
                 {
                     TempData.Add("SuccessMessage", result.Message);
