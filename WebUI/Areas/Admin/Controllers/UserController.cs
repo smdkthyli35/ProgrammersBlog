@@ -2,6 +2,7 @@
 using Business.Extensions;
 using Core.Utilities.Extensions;
 using Core.Utilities.Results.ComplexTypes;
+using Entities.ComplexTypes;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -123,9 +124,9 @@ namespace WebUI.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var uploadedImageDtoResult = await _imageHelper.UploadUserImage(userAddDto.UserName, userAddDto.PictureFile);
-                userAddDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success 
-                    ? uploadedImageDtoResult.Data.FullName 
+                var uploadedImageDtoResult = await _imageHelper.Upload(userAddDto.UserName, userAddDto.PictureFile, PictureType.User);
+                userAddDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success
+                    ? uploadedImageDtoResult.Data.FullName
                     : "userImages/defaultUser.png";
                 var user = _mapper.Map<User>(userAddDto);
                 var result = await _userManager.CreateAsync(user, userAddDto.Password);
@@ -223,7 +224,7 @@ namespace WebUI.Areas.Admin.Controllers
                 var oldUserPicture = oldUser.Picture;
                 if (userUpdateDto.PictureFile != null)
                 {
-                    var uploadedImageDtoResult = await _imageHelper.UploadUserImage(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    var uploadedImageDtoResult = await _imageHelper.Upload(userUpdateDto.UserName, userUpdateDto.PictureFile, PictureType.User);
                     userUpdateDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success
                         ? uploadedImageDtoResult.Data.FullName
                         : "userImages/defaultUser.png";
@@ -300,7 +301,7 @@ namespace WebUI.Areas.Admin.Controllers
                 var oldUserPicture = oldUser.Picture;
                 if (userUpdateDto.PictureFile != null)
                 {
-                    var uploadedImageDtoResult = await _imageHelper.UploadUserImage(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    var uploadedImageDtoResult = await _imageHelper.Upload(userUpdateDto.UserName, userUpdateDto.PictureFile, PictureType.User);
                     userUpdateDto.Picture = uploadedImageDtoResult.ResultStatus == ResultStatus.Success
                         ? uploadedImageDtoResult.Data.FullName
                         : "userImages/defaultUser.png";

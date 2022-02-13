@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Results.Abstract;
+using Entities.ComplexTypes;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -10,7 +11,7 @@ namespace WebUI.Helpers.Abstract
 {
     public interface IImageHelper
     {
-        Task<IDataResult<ImageUploadedDto>> UploadUserImage(string userName, IFormFile pictureFile, string folderName = "userImages");
+        Task<IDataResult<ImageUploadedDto>> Upload(string Name, IFormFile pictureFile, PictureType pictureType, string folderName = null);
         IDataResult<ImageDeletedDto> Delete(string pictureName); 
     }
 }
