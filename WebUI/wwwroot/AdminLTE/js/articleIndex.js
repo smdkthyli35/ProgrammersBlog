@@ -272,54 +272,58 @@
             }
         }
     });
-    //Datatables ends here.
+    /* DataTables end here */
 
-    //Ajax POST / Deleting a User starts from here.
-    $(document).on('click', '.btn-delete', function (event) {
-        event.preventDefault();
-        const id = $(this).attr('data-id');
-        const tableRow = $(`[name="${id}"]`);
-        const userName = tableRow.find('td:eq(1)').text();
-        Swal.fire({
-            title: 'Silmek istediğinize emin misiniz?',
-            text: `${userName} adlı kullanıcı silinecektir!`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Evet, silmek istiyorum.',
-            cancelButtonText: 'Hayır, silmek istemiyorum.'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { userId: id },
-                    url: '/Admin/User/Delete/',
-                    success: function (data) {
-                        const userDto = jQuery.parseJSON(data);
-                        if (userDto.ResultStatus === 0) {
-                            Swal.fire(
-                                'Silindi!',
-                                `${userDto.User.UserName} adlı kullanıcı başarıyla silinmiştir.`,
-                                'success'
-                            );
-                            dataTable.row(tableRow).remove().draw();
+    /* Ajax POST / Deleting a User starts from here */
+
+    $(document).on('click',
+        '.btn-delete',
+        function (event) {
+            event.preventDefault();
+            const id = $(this).attr('data-id');
+            const tableRow = $(`[name="${id}"]`);
+            const articleTitle = tableRow.find('td:eq(2)').text();
+            Swal.fire({
+                title: 'Silmek istediğinize emin misiniz?',
+                text: `${articleTitle} başlıklı makale silinicektir!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, silmek istiyorum.',
+                cancelButtonText: 'Hayır, silmek istemiyorum.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { articleId: id },
+                        url: '/Admin/Article/Delete/',
+                        success: function (data) {
+                            const articleResult = jQuery.parseJSON(data);
+                            if (articleResult.ResultStatus === 0) {
+                                Swal.fire(
+                                    'Silindi!',
+                                    `${articleResult.Message}`,
+                                    'success'
+                                );
+
+                                dataTable.row(tableRow).remove().draw();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Başarısız İşlem!',
+                                    text: `${articleResult.Message}`,
+                                });
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            toastr.error(`${err.responseText}`, "Hata!");
                         }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Başarısız İşlem!',
-                                text: `${userDto.Message}`,
-                            });
-                        }
-                    },
-                    error: function (err) {
-                        console.log(err);
-                        toastr.error(`${err.responseText}`, "Hata!");
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
+
 });
