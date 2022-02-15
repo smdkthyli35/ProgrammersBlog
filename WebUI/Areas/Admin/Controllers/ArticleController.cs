@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebUI.Areas.Admin.Models;
 using WebUI.Helpers.Abstract;
@@ -144,6 +145,17 @@ namespace WebUI.Areas.Admin.Controllers
         {
             var result = await _articleService.DeleteAsync(articleId,LoggedInUser.UserName);
             var articleResult = JsonSerializer.Serialize(result);
+            return Json(articleResult);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAllArticles()
+        {
+            var articles = await _articleService.GetAllByNonDeletedAndActiveAsync();
+            var articleResult = JsonSerializer.Serialize(articles, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(articleResult);
         }
     }
