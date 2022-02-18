@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Concrete;
-using ProgrammersBlog.Entities.Dtos;
+using Entities.Dtos;
 
 namespace ProgrammersBlog.Services.AutoMapper.Profiles
 {

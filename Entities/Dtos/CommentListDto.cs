@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.Concrete;
 
-namespace ProgrammersBlog.Entities.Dtos
+namespace Entities.Dtos
 {
     public class CommentListDto
     {
