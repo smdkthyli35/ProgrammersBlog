@@ -1,4 +1,4 @@
-﻿    using AutoMapper;
+﻿using AutoMapper;
 using Business.Extensions;
 using Core.Utilities.Extensions;
 using Core.Utilities.Results.ComplexTypes;
