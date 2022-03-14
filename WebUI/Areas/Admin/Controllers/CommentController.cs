@@ -16,6 +16,7 @@ using Core.Utilities.Results.ComplexTypes;
 using Core.Utilities.Extensions;
 using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 {
@@ -27,6 +28,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             _commentService = commentService;
         }
+
+        [Authorize(Roles = "SuperAdmin, Comment.Read")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -34,6 +37,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return View(result.Data);
         }
 
+        [Authorize(Roles = "SuperAdmin, Comment.Read")]
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
@@ -45,6 +49,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(commentsResult);
         }
 
+        [Authorize(Roles = "SuperAdmin, Comment.Read")]
         [HttpGet]
         public async Task<IActionResult> GetDetail(int commentId)
         {
@@ -59,6 +64,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = "SuperAdmin, Comment.Delete")]
         [HttpPost]
         public async Task<IActionResult> Delete(int commentId)
         {
@@ -67,6 +73,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(commentResult);
         }
 
+        [Authorize(Roles = "SuperAdmin, Comment.Update")]
         [HttpPost]
         public async Task<IActionResult> Approve(int commentId)
         {
@@ -79,6 +86,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         }
 
 
+        [Authorize(Roles = "SuperAdmin, Comment.Update")]
         [HttpGet]
         public async Task<IActionResult> Update(int commentId)
         {
@@ -92,6 +100,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 return NotFound();
             }
         }
+
+        [Authorize(Roles = "SuperAdmin, Comment.Update")]
         [HttpPost]
         public async Task<IActionResult> Update(CommentUpdateDto commentUpdateDto)
         {
@@ -117,6 +127,5 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
             return Json(commentUpdateAjaxErrorModel);
         }
-
     }
 }

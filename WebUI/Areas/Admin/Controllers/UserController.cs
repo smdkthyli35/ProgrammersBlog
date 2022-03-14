@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using Business.Extensions;
 using Core.Utilities.Extensions;
 using Core.Utilities.Results.ComplexTypes;
@@ -36,7 +36,7 @@ namespace WebUI.Areas.Admin.Controllers
             _toastNotification = toastNotification;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Read")]
         public async Task<IActionResult> Index()
         {
             var users = await UserManager.Users.ToListAsync();
@@ -47,6 +47,7 @@ namespace WebUI.Areas.Admin.Controllers
             });
         }
 
+        [Authorize(Roles = "SuperAdmin, User.Read")]
         [HttpGet]
         public async Task<PartialViewResult> GetDetail(int userId)
         {
@@ -54,7 +55,7 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView("_GetDetailPartial", new UserDto { User = user });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Read")]
         [HttpGet]
         public async Task<JsonResult> GetAllUsers()
         {
@@ -70,14 +71,14 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(userListDto);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Create")]
         [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Create")]
         [HttpPost]
         public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
@@ -125,7 +126,8 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(userAddAjaxModelStateErrorModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Delete")]
+        [HttpPost]
         public async Task<JsonResult> Delete(int userId)
         {
             var user = await UserManager.FindByIdAsync(userId.ToString());
@@ -157,7 +159,7 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Update")]
         [HttpGet]
         public async Task<PartialViewResult> Update(int userId)
         {
@@ -166,7 +168,7 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView("_UserUpdatePartial", userUpdateDto);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, User.Update")]
         [HttpPost]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {

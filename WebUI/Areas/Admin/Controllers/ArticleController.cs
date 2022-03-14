@@ -5,6 +5,7 @@ using Core.Utilities.Results.Concrete;
 using Entities.ComplexTypes;
 using Entities.Concrete;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -33,6 +34,7 @@ namespace WebUI.Areas.Admin.Controllers
             _toastNotification = toastNotification;
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Read")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -44,6 +46,7 @@ namespace WebUI.Areas.Admin.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Create")]
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -58,6 +61,7 @@ namespace WebUI.Areas.Admin.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Create")]
         [HttpPost]
         public async Task<IActionResult> Add(ArticleAddViewModel articleAddViewModel)
         {
@@ -85,6 +89,7 @@ namespace WebUI.Areas.Admin.Controllers
             return View(articleAddViewModel);
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Update")]
         [HttpGet]
         public async Task<IActionResult> Update(int articleId)
         {
@@ -102,6 +107,7 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Update")]
         [HttpPost]
         public async Task<IActionResult> Update(ArticleUpdateViewModel articleUpdateViewModel)
         {
@@ -147,6 +153,7 @@ namespace WebUI.Areas.Admin.Controllers
             return View(articleUpdateViewModel);
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Delete")]
         [HttpPost]
         public async Task<JsonResult> Delete(int articleId)
         {
@@ -155,6 +162,7 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(articleResult);
         }
 
+        [Authorize(Roles = "SuperAdmin, Article.Read")]
         [HttpGet]
         public async Task<JsonResult> GetAllArticles()
         {
