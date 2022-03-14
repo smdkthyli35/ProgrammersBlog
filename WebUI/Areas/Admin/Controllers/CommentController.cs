@@ -33,6 +33,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             var result = await _commentService.GetAllByNonDeletedAsync();
             return View(result.Data);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
@@ -43,6 +44,21 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
             return Json(commentsResult);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDetail(int commentId)
+        {
+            var result = await _commentService.GetAsync(commentId);
+            if (result.ResultStatus == ResultStatus.Success)
+            {
+                return PartialView("_CommentDetailPartial", result.Data);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int commentId)
         {
@@ -75,7 +91,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     {
                         CommentDto = result.Data,
                         CommentUpdatePartial = await this.RenderViewToStringAsync("_CommentUpdatePartial", commentUpdateDto)
-                    },new JsonSerializerOptions
+                    }, new JsonSerializerOptions
                     {
                         ReferenceHandler = ReferenceHandler.Preserve
                     });
