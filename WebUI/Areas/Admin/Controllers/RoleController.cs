@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using AutoMapper;
+using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,15 +10,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WebUI.Helpers.Abstract;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private readonly RoleManager<Role> _roleManager;
 
-        public RoleController(RoleManager<Role> roleManager)
+        public RoleController(RoleManager<Role> roleManager, UserManager<User> userManager, IMapper mapper, IImageHelper imageHelper) : base(userManager, mapper, imageHelper)
         {
             _roleManager = roleManager;
         }
@@ -43,6 +45,31 @@ namespace WebUI.Areas.Admin.Controllers
                 Roles = roles
             });
             return Json(roleListDto);
+        }
+
+        [Authorize(Roles = "SuperAdmin, User.Update")]
+        [HttpGet]
+        public async Task<IActionResult> Assign(int userId)
+        {
+            var user = await UserManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            var roles = await _roleManager.Roles.ToListAsync();
+            var userRoles = await UserManager.GetRolesAsync(user);
+            UserRoleAssignDto userRoleAssignDto = new UserRoleAssignDto
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+            };
+            foreach (var role in roles)
+            {
+                RoleAssignDto roleAssignDto = new RoleAssignDto
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    HasRole = userRoles.Contains(role.Name)
+                };
+                userRoleAssignDto.RoleAssignDtos.Add(roleAssignDto);
+            }
+            return PartialView("_RoleAssignPartial", userRoleAssignDto);
         }
     }
 }
