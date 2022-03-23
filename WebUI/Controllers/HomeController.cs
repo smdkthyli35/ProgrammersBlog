@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Abstract;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,18 @@ namespace WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IArticleService _articleService;
+
+        public HomeController(IArticleService articleService)
         {
-            return View();
+            _articleService = articleService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var articleListDto = await _articleService.GetAllByNonDeletedAndActiveAsync();
+            return View(articleListDto.Data);
         }
     }
 }
