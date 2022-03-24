@@ -17,11 +17,11 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? categoryId)
+        public async Task<IActionResult> Index(int? categoryId, int currentPage = 1, int pageSize = 5)
         {
             var articlesResult = await (categoryId == null
-                ? _articleService.GetAllByNonDeletedAndActiveAsync()
-                : _articleService.GetAllByCategoryAsync(categoryId.Value));
+                ? _articleService.GetAllByPagingAsync(null, currentPage, pageSize)
+                : _articleService.GetAllByPagingAsync(categoryId.Value, currentPage, pageSize));
             return View(articlesResult.Data);
         }
     }
