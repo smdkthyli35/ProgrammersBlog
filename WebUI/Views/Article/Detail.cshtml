@@ -1,4 +1,4 @@
-﻿@model Entities.Dtos.ArticleDto
+﻿@using Entities.Dtos
 
 @{
     Layout = "_ArticleLayout";
@@ -32,28 +32,20 @@
 
     <p class="text-center">Okunma Sayısı: <span class="badge badge-info">@Model.Article.ViewsCount</span> Yorum Sayısı: <span class="badge badge-warning">@Model.Article.CommentCount</span> </p>
 
-    <!-- Comments Form -->
-    <div class="card my-4">
-        <h5 class="card-header">Bir yorum ekle</h5>
-        <div class="card-body">
-            <form>
-                <div class="form-group">
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Ekle</button>
-            </form>
-        </div>
-    </div>
+    @*@await Html.PartialAsync("_CommentAddPartial")*@
 
-    @foreach (var comment in Model.Article.Comments)
-    {
-        <!-- Single Comment -->
-        <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
-            <div class="media-body">
-                <h5 class="mt-0">@comment.CreatedByName</h5>
-                @comment.Text
+    <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto { ArticleId = Model.Article.Id }" />
+    <div id="comments">
+        @foreach (var comment in Model.Article.Comments)
+        {
+            <!-- Single Comment -->
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">@comment.CreatedByName</h5>
+                    @comment.Text
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
