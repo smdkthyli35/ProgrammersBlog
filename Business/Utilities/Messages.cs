@@ -65,6 +65,11 @@ namespace Business.Utilities
             {
                 return $"{articleTitle} başlıklı makale başarıyla arşivden geri getirilmiştir.";
             }
+
+            public static string IncreaseViewCount(string articleTitle)
+            {
+                return $"{articleTitle} başlıklı makale'nin okunma sayısı başarıyla artırılmıştır.";
+            }
         }
 
         public static class Comment
