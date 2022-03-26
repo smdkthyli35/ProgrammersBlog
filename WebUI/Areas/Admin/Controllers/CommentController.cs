@@ -69,7 +69,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int commentId)
         {
             var result = await _commentService.DeleteAsync(commentId, LoggedInUser.UserName);
-            var commentResult = JsonSerializer.Serialize(result);
+            var commentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(commentResult);
         }
 
@@ -154,7 +157,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> UndoDelete(int commentId)
         {
             var result = await _commentService.UndoDeleteAsync(commentId, LoggedInUser.UserName);
-            var undoDeleteCommentResult = JsonSerializer.Serialize(result);
+            var undoDeleteCommentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(undoDeleteCommentResult);
         }
 
@@ -163,7 +169,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> HardDelete(int commentId)
         {
             var result = await _commentService.HardDeleteAsync(commentId);
-            var hardDeletedCommentResult = JsonSerializer.Serialize(result);
+            var hardDeletedCommentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(hardDeletedCommentResult);
         }
     }
