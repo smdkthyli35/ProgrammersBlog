@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-
 <html lang="tr">
+
 <head>
 
     <meta charset="utf-8">
@@ -17,8 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="~/BlogHome/css/blog-home.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-    <link href="~/BlogHome/css/site.css" rel="stylesheet" />
+    <link href="~/BlogHome/css/contact-page.css" rel="stylesheet" />
 
 </head>
 
@@ -50,22 +49,20 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             @RenderBody()
 
             @*@await Component.InvokeAsync("RightSideBar")*@
 
-
-
         </div>
     </div>
 
-    <footer class="py-5 bg-dark fixed-bottom">
+    @*<footer class="py-5 bg-dark">
         <div class="container">
             <p class="m-0 text-center text-white">Tüm Hakları Saklıdır &copy; ProgrammersBlog 2022</p>
         </div>
-    </footer>
+    </footer>*@
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/BlogHome/vendor/jquery/jquery.min.js"></script>
