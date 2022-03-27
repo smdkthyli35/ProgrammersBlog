@@ -33,6 +33,7 @@ namespace WebUI.Controllers
         [HttpGet]
         public IActionResult About()
         {
+            throw new Exception("Hata!");
             return View(_aboutUsPageInfo);
         }
 
