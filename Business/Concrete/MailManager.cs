@@ -56,7 +56,7 @@ namespace Business.Concrete
                 To = { new MailAddress("denememaili2@gmail.com") },
                 Subject = emailSendDto.Subject,
                 IsBodyHtml = true,
-                Body = $"Gönderen Kişi: {emailSendDto.Name}, Gönderen E-Posta Adresi: {emailSendDto.Email}\n{emailSendDto.Message}"
+                Body = $"Gönderen Kişi: {emailSendDto.Name}, Gönderen E-Posta Adresi: {emailSendDto.Email} <br/>{emailSendDto.Message}"
             };
 
             SmtpClient smtpClient = new SmtpClient
