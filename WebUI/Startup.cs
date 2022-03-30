@@ -1,5 +1,6 @@
 using Business.AutoMapper.Profiles;
 using Business.Extensions;
+using Core.Utilities.Extensions;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,8 @@ namespace WebUI
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
 
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+
+            services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
 
             services.AddControllersWithViews(options =>
             {
