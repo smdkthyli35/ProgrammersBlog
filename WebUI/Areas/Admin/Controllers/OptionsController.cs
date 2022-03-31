@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NToastNotify;
+using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,10 @@ namespace WebUI.Areas.Admin.Controllers
         private readonly IWritableOptions<WebsiteInfo> _websiteInfoWriter;
         private readonly SmtpSettings _smtpSettings;
         private readonly IWritableOptions<SmtpSettings> _smtpSettingsWriter;
+        private readonly ArticleRightSideBarWidgetOptions _articleRightSideBarWidgetOptions;
+        private readonly IWritableOptions<ArticleRightSideBarWidgetOptions> _articleRightSideBarWidgetOptionsWriter;
 
-        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter)
+        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter, IOptionsSnapshot<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptions, IWritableOptions<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptionsWriter)
         {
             _aboutUsPageInfo = aboutUsPageInfo.Value;
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
@@ -32,6 +35,8 @@ namespace WebUI.Areas.Admin.Controllers
             _websiteInfoWriter = websiteInfoWriter;
             _smtpSettings = smtpSettings.Value;
             _smtpSettingsWriter = smtpSettingsWriter;
+            _articleRightSideBarWidgetOptions = articleRightSideBarWidgetOptions.Value;
+            _articleRightSideBarWidgetOptionsWriter = articleRightSideBarWidgetOptionsWriter;
         }
 
         [HttpGet]
@@ -117,6 +122,41 @@ namespace WebUI.Areas.Admin.Controllers
                 return View(smtpSettings);
             }
             return View(smtpSettings);
+        }
+
+        [HttpGet]
+        public IActionResult ArticleRightSideBarWidgetSettings()
+        {
+            return View(_articleRightSideBarWidgetOptions);
+        }
+
+        [HttpPost]
+        public IActionResult ArticleRightSideBarWidgetSettings(ArticleRightSideBarWidgetOptionsViewModel articleRightSideBarWidgetOptionsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _articleRightSideBarWidgetOptionsWriter.Update(x =>
+                {
+                    x.Header = articleRightSideBarWidgetOptionsViewModel.Header;
+                    x.TakeSize = articleRightSideBarWidgetOptionsViewModel.TakeSize;
+                    x.CategoryId = articleRightSideBarWidgetOptionsViewModel.CategoryId;
+                    x.FilterBy = articleRightSideBarWidgetOptionsViewModel.FilterBy;
+                    x.OrderBy = articleRightSideBarWidgetOptionsViewModel.OrderBy;
+                    x.IsAscending = articleRightSideBarWidgetOptionsViewModel.IsAscending;
+                    x.StartAt = articleRightSideBarWidgetOptionsViewModel.StartAt;
+                    x.EndAt = articleRightSideBarWidgetOptionsViewModel.EndAt;
+                    x.MaxViewCount = articleRightSideBarWidgetOptionsViewModel.MaxViewCount;
+                    x.MinViewCount = articleRightSideBarWidgetOptionsViewModel.MinViewCount;
+                    x.MaxCommentCount = articleRightSideBarWidgetOptionsViewModel.MaxCommentCount;
+                    x.MinCommentCount = articleRightSideBarWidgetOptionsViewModel.MinCommentCount;
+                });
+                _toastNotification.AddSuccessToastMessage("Makale sayfalarınızın widget ayarları başarıyla güncellenmiştir.", new ToastrOptions
+                {
+                    Title = "Başarılı İşlem!"
+                });
+                return View(articleRightSideBarWidgetOptionsViewModel);
+            }
+            return View(articleRightSideBarWidgetOptionsViewModel);
         }
     }
 }
