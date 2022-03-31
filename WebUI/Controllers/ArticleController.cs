@@ -52,7 +52,7 @@ namespace WebUI.Controllers
                     ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel
                     {
                         ArticleListDto = userArticles.Data,
-                        Header = _articleRightSideBarWidgetOptions.HeaderA,
+                        Header = _articleRightSideBarWidgetOptions.Header,
                         User = articleResult.Data.Article.User
                     }
                 });
