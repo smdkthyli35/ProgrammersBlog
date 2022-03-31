@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Entities.Concrete;
 using Entities.Dtos;
+using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace WebUI.AutoMapper.Profiles
         {
             CreateMap<ArticleAddViewModel, ArticleAddDto>();
             CreateMap<ArticleUpdateDto, ArticleUpdateViewModel>().ReverseMap();
+            CreateMap<ArticleRightSideBarWidgetOptions, ArticleRightSideBarWidgetOptionsViewModel>();
         }
     }
 }

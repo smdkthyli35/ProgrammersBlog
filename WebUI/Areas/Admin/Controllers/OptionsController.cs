@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Helpers.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Core.Utilities.Helpers.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +27,10 @@ namespace WebUI.Areas.Admin.Controllers
         private readonly IWritableOptions<SmtpSettings> _smtpSettingsWriter;
         private readonly ArticleRightSideBarWidgetOptions _articleRightSideBarWidgetOptions;
         private readonly IWritableOptions<ArticleRightSideBarWidgetOptions> _articleRightSideBarWidgetOptionsWriter;
+        private readonly ICategoryService _categoryService;
+        private readonly IMapper _mapper;
 
-        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter, IOptionsSnapshot<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptions, IWritableOptions<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptionsWriter)
+        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter, IOptionsSnapshot<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptions, IWritableOptions<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptionsWriter, ICategoryService categoryService, IMapper mapper)
         {
             _aboutUsPageInfo = aboutUsPageInfo.Value;
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
@@ -37,6 +41,8 @@ namespace WebUI.Areas.Admin.Controllers
             _smtpSettingsWriter = smtpSettingsWriter;
             _articleRightSideBarWidgetOptions = articleRightSideBarWidgetOptions.Value;
             _articleRightSideBarWidgetOptionsWriter = articleRightSideBarWidgetOptionsWriter;
+            _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -125,14 +131,19 @@ namespace WebUI.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult ArticleRightSideBarWidgetSettings()
+        public async Task<IActionResult> ArticleRightSideBarWidgetSettings()
         {
-            return View(_articleRightSideBarWidgetOptions);
+            var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync();
+            var articleRightSideBarWidgetOptionsViewModel = _mapper.Map<ArticleRightSideBarWidgetOptionsViewModel>(_articleRightSideBarWidgetOptions);
+            articleRightSideBarWidgetOptionsViewModel.Categories = categoriesResult.Data.Categories;
+            return View(articleRightSideBarWidgetOptionsViewModel);
         }
 
         [HttpPost]
-        public IActionResult ArticleRightSideBarWidgetSettings(ArticleRightSideBarWidgetOptionsViewModel articleRightSideBarWidgetOptionsViewModel)
+        public async Task<IActionResult> ArticleRightSideBarWidgetSettings(ArticleRightSideBarWidgetOptionsViewModel articleRightSideBarWidgetOptionsViewModel)
         {
+            var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync();
+            articleRightSideBarWidgetOptionsViewModel.Categories = categoriesResult.Data.Categories;
             if (ModelState.IsValid)
             {
                 _articleRightSideBarWidgetOptionsWriter.Update(x =>
