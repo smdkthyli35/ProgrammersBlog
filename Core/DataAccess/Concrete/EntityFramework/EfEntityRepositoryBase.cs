@@ -18,6 +18,8 @@ namespace Core.DataAccess.Concrete.EntityFramework
         public EfEntityRepositoryBase(DbContext context)
         {
             _context = context;
+            //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking; 
+            //Sınıf bazında tracking işlemi yapmak istiyorsak kullanılır.
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
@@ -55,7 +57,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     query = query.Include(includeProperty);
                 }
             }
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
@@ -69,7 +71,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                     query = query.Include(includeProperty);
                 }
             }
-            return await query.SingleOrDefaultAsync();
+            return await query.AsNoTracking().SingleOrDefaultAsync();
         }
 
         public async Task<IList<TEntity>> SearchAsync(IList<Expression<Func<TEntity, bool>>> predicates, params Expression<Func<TEntity, object>>[] includeProperties)
@@ -94,7 +96,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                 }
             }
 
-            return await query.ToListAsync();
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)

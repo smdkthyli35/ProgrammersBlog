@@ -21,7 +21,8 @@ namespace Business.Extensions
     {
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection, string connectionString)
         {
-            serviceCollection.AddDbContext<ProgrammersBlogContext>(options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<ProgrammersBlogContext>(options => options.UseSqlServer(connectionString).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            //Bunu yaparak bu dbContext'i kullanan tüm uygulama için bu değişiklik gerçekleşmiş olacaktır.
             serviceCollection.AddIdentity<User, Role>(options =>
             {
                 //User Password Options
