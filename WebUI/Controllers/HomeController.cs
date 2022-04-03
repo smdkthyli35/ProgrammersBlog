@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
+    [Route("/")]
     public class HomeController : Controller
     {
         private readonly IArticleService _articleService;
@@ -29,6 +30,9 @@ namespace WebUI.Controllers
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
         }
 
+        [Route("index")]
+        [Route("anasayfa")]
+        [Route("")]
         [HttpGet]
         public async Task<IActionResult> Index(int? categoryId, int currentPage = 1, int pageSize = 5, bool isAscending = false)
         {
@@ -38,12 +42,15 @@ namespace WebUI.Controllers
             return View(articlesResult.Data);
         }
 
+        [Route("hakkimizda")]
+        [Route("hakkinda")]
         [HttpGet]
         public IActionResult About()
         {
             return View(_aboutUsPageInfo);
         }
 
+        [Route("iletisim")]
         [HttpGet]
         public IActionResult Contact()
         {

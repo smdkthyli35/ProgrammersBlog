@@ -94,6 +94,11 @@ namespace WebUI
                     areaName: "Admin",
                     pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
                     );
+                endpoints.MapControllerRoute(
+                    name: "article",
+                    pattern: "{title}/{articleId}",
+                    defaults: new { controller = "Article", action = "Detail" }
+                    );
                 endpoints.MapDefaultControllerRoute();
             });
         }
