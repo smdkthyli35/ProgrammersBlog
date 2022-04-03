@@ -21,9 +21,9 @@ namespace DataAccess.Concrete
             _context = context;
         }
 
-        public IArticleDal Articles => _articleDal ?? new EfArticleDal(_context);
-        public ICategoryDal Categories => _categoryDal ?? new EfCategoryDal(_context);
-        public ICommentDal Comments => _commentDal ?? new EfCommentDal(_context);
+        public IArticleDal Articles => _articleDal ??= new EfArticleDal(_context);
+        public ICategoryDal Categories => _categoryDal ??= new EfCategoryDal(_context);
+        public ICommentDal Comments => _commentDal ??= new EfCommentDal(_context);
 
         public async ValueTask DisposeAsync()
         {
