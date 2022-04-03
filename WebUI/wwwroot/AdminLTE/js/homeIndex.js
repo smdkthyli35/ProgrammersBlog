@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    //DataTable
     $('#articlesTable').DataTable({
         "order": [[4, "desc"]],
         language: {
@@ -205,4 +206,63 @@
             }
         },
     });
+
+    //DataTable
+
+    // Chart.js
+
+    const categories = [
+        {
+            name: 'C#',
+            viewCount: '24500'
+        },
+        {
+            name: 'C++',
+            viewCount: '77000'
+        },
+        {
+            name: 'Javascript',
+            viewCount: '57800'
+        },
+        {
+            name: 'Dart',
+            viewCount: '2250'
+        },
+        {
+            name: 'PHP',
+            viewCount: '123000'
+        },
+        {
+            name: 'Typescript',
+            viewCount: '18999'
+        }
+    ];
+
+
+    let viewCountContext = $('#viewCountChart');
+    let viewCountChart = new Chart(viewCountContext,
+        {
+            type: 'bar',
+            data: {
+                labels: categories.map(category => category.name),
+                datasets: [{
+                    label: 'Okunma Sayısı',
+                    data: categories.map(category => category.viewCount),
+                    backgroundColor: ['#0E185F', '#FD5D5D', '#85C88A', '#333C83', '#733C3C'],
+                    hoverBorderWidth: 4,
+                    hoverBorderColor: 'black'
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                }
+            }
+        });
 });
