@@ -7,6 +7,7 @@ using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,7 +97,10 @@ namespace Business.Concrete
 
         public async Task<IDataResult<CategoryDto>> GetAsync(int categoryId)
         {
+            var query = UnitOfWork.Categories.GetAsQueryable();
+            query.Include(c => c.Articles).ThenInclude(a => a.Comments);
             var category = await UnitOfWork.Categories.GetAsync(c => c.Id == categoryId);
+
             if (category != null)
             {
                 return new DataResult<CategoryDto>(ResultStatus.Success, new CategoryDto
