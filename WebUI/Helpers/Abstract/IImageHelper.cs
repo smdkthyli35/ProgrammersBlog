@@ -11,7 +11,7 @@ namespace WebUI.Helpers.Abstract
 {
     public interface IImageHelper
     {
-        Task<IDataResult<ImageUploadedDto>> Upload(string Name, IFormFile pictureFile, PictureType pictureType, string folderName = null);
-        IDataResult<ImageDeletedDto> Delete(string pictureName); 
+        string Upload(string Name, IFormFile pictureFile, PictureType pictureType, string folderName = null);
+        IDataResult<ImageDeletedDto> Delete(string pictureName);
     }
 }
