@@ -33,6 +33,7 @@ namespace WebUI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IImageHelper, ImageHelper>();
 
             services.AddSingleton(provider => new MapperConfiguration(cfg =>
             {
@@ -64,7 +65,6 @@ namespace WebUI
             }).AddNToastNotifyToastr();
             services.AddSession();
             services.LoadMyServices(connectionString: Configuration.GetConnectionString("LocalDB"));
-            services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = new PathString("/Admin/Auth/Login");

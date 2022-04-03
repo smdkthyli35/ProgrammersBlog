@@ -38,7 +38,7 @@ namespace WebUI.Areas.Admin.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, userLoginDto.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home", new { Area = "Admin" });
                     }
                     else
                     {
